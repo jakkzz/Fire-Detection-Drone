@@ -1,5 +1,7 @@
 # Aerial Fire Detection using Computer Vision and Drone
 
+> 🇬🇧 **English** (this page) · [🇹🇭 ภาษาไทย](th/README.md)
+
 Detects fire in aerial/drone footage with [Ultralytics YOLO26](https://docs.ultralytics.com/models/yolo26/),
 annotated with [Supervision](https://supervision.roboflow.com/).
 

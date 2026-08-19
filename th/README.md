@@ -1,0 +1,150 @@
+# การตรวจจับไฟป่าจากภาพถ่ายทางอากาศด้วยคอมพิวเตอร์วิทัศน์ (computer vision) และอากาศยานไร้คนขับ (drone)
+
+> 🇹🇭 **ภาษาไทย** (เอกสารฉบับนี้) · [🇬🇧 English](../README.md)
+
+ระบบตรวจจับไฟจากภาพถ่ายทางอากาศที่บันทึกด้วยอากาศยานไร้คนขับ โดยใช้โมเดล​ (แบบจำลอง)
+[Ultralytics YOLO26](https://docs.ultralytics.com/models/yolo26/) ในการตรวจจับ
+และใช้ไลบรารี [Supervision](https://supervision.roboflow.com/) ในการแสดงผลการตรวจจับและติดตามวัตถุด้วยอัลกอริทึม ByteTrack
+
+> **ปรับปรุงล่าสุดเมื่อเดือนสิงหาคม 2026** ผู้เขียนได้ปรับปรุงโค๊ดชุดนี้ใหม่ทั้งหมด
+> เนื้อหาทั้งหมดที่ปรากฏต่อจากนี้สามารถทำงานได้บนไลบรารีรุ่นปัจจุบันแล้ว
+> และผู้เขียนได้เพิ่ม [`main.ipynb`](main.ipynb) เข้ามา ซึ่งเป็นฉบับปรับปรุงของ
+> [บทความบนบล็อกของ Roboflow](https://blog.roboflow.com/aerial-fire-detection/) ที่โปรเจ็คนี้จัดทำขึ้นประกอบ
+> รายละเอียดปรากฏในหัวข้อ [การเปลี่ยนแปลงที่ผู้เขียนดำเนินการ](#การเปลี่ยนแปลงที่ผู้เขียนดำเนินการ)
+
+## ฉบับแปลภาษาไทย
+
+โฟลเดอร์ `th/` คือเอกสารฉบับภาษาไทยของโปรเจ็คนี้ ปัจจุบันมีสถานะการแปลดังนี้
+
+| ไฟล์ | สถานะ |
+|---|---|
+| `README.md` | ✅ แปลแล้ว |
+| [`main.ipynb`](main.ipynb) | ✅ แปลแล้ว |
+| โน้ตบุ๊กที่รันได้อีกสามไฟล์ | ✅ แปลแล้ว |
+
+โน้ตบุ๊กฉบับภาษาอังกฤษอยู่ที่รากของคลังโค้ด โดยมีโค้ดชุดเดียวกันกับฉบับในโฟลเดอร์นี้ทุกบรรทัด
+ต่างกันแค่คำอธิบายและคอมเมนต์
+
+โค้ด ชื่อตัวแปร ชื่อไลบรารี ชื่ออาร์กิวเมนต์ และชื่อตัวชี้วัด (`Recall`, `mAP@50-95`)
+ผู้เขียนคงไว้เป็นภาษาอังกฤษ เพื่อให้นำไปใช้ต่อได้ทันทีและค้นหาข้อมูลเพิ่มเติมได้ง่าย
+ส่วนศัพท์เทคนิคจะใส่คำภาษาอังกฤษกำกับไว้ในวงเล็บเมื่อกล่าวถึงครั้งแรก
+แล้วใช้คำที่คนทำงานสายนี้เรียกกันจริงในเนื้อหาต่อจากนั้น
+
+ไฟล์ตัวอย่าง `fire_image.png` และ `fire.mp4` ไม่ได้คัดลอกซ้ำมาไว้ในโฟลเดอร์นี้
+เพราะโน้ตบุ๊กทุกไฟล์ดึงไฟล์เหล่านี้จาก URL ของคลังโค้ดโดยตรงอยู่แล้ว
+
+## โน้ตบุ๊ก
+
+**เริ่มที่ [`main.ipynb`](main.ipynb) ซึ่งเป็นฉบับปรับปรุงของบทความบนบล็อกของ Roboflow เรื่อง
+[Aerial Fire Detection with Drone Imagery and Computer Vision](https://blog.roboflow.com/aerial-fire-detection/)**
+
+ไฟล์นี้ครอบคลุมเนื้อหาชุดเดียวกับบทความต้นฉบับ ตั้งแต่เหตุผลว่าทำไมต้องตรวจจับไฟป่าจากมุมสูง
+ภาพรวมการทำงานของระบบตั้งแต่ต้นจนจบ การเตรียมชุดข้อมูล การติดป้ายกำกับข้อมูล (labelling)
+การเทรนโมเดล ไปจนถึงการนำโมเดลไปใช้กับภาพนิ่งและวิดีโอ (inference)
+ต่างกันตรงที่ผู้เขียนปรับโค้ดให้ทำงานได้บนไลบรารีรุ่นปัจจุบัน
+และทุกหัวข้อจะบอกชัดเจนว่าอ่านถึงจุดไหนแล้วควรเปิดโน้ตบุ๊กไฟล์ไหนขึ้นมารันประกอบ
+
+บทความต้นฉบับเผยแพร่เมื่อเดือนกันยายน 2023 โค้ดบางส่วนยังใช้งานได้ตามปกติ บางส่วนแค่ล้าสมัย
+ส่วนหัวข้อการวาดกรอบผลตรวจจับ (annotation) และการติดตามวัตถุ (tracking) นั้นรันไม่ได้แล้ว
+`main.ipynb` เตือนไว้ตรงจุดที่เนื้อหานั้นปรากฏ แทนที่จะปล่อยให้ผู้อ่านไปเจอเองตอนกดรัน
+
+| โน้ตบุ๊ก | หน้าที่ | |
+|---|---|---|
+| [`th/main.ipynb`](main.ipynb) | **เริ่มต้นที่นี่** ฉบับภาษาไทยของ[บทความบนบล็อกของ Roboflow](https://blog.roboflow.com/aerial-fire-detection/) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jakkzz/Fire-Detection-Drone/blob/main/th/main.ipynb) |
+| [`drone_fire_detection_yolo26.ipynb`](drone_fire_detection_yolo26.ipynb) | เทรนโมเดลด้วยชุดข้อมูลจาก Roboflow | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jakkzz/Fire-Detection-Drone/blob/main/th/drone_fire_detection_yolo26.ipynb) |
+| [`Supervision_Image_Inferencing.ipynb`](Supervision_Image_Inferencing.ipynb) | รันโมเดลที่เทรนแล้วกับภาพนิ่งหนึ่งภาพ | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jakkzz/Fire-Detection-Drone/blob/main/th/Supervision_Image_Inferencing.ipynb) |
+| [`Supervision_Video_Inferencing.ipynb`](Supervision_Video_Inferencing.ipynb) | ตรวจจับและติดตามวัตถุด้วย ByteTrack บนวิดีโอ | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jakkzz/Fire-Detection-Drone/blob/main/th/Supervision_Video_Inferencing.ipynb) |
+
+รันโน้ตบุ๊กทั้งสามไฟล์ตามลำดับในตาราง ขั้นตอนเทรนโมเดลจะได้ไฟล์ checkpoint ชื่อ `best.pt` ออกมา
+ซึ่งโน้ตบุ๊กฝั่ง inference ทั้งสองไฟล์จะให้อัปโหลดไฟล์นี้เข้าไป
+ทั้งนี้ `best.pt` ไม่ได้เก็บไว้ในคลังโค้ดนี้
+
+ควรรันบน runtime แบบ GPU (`Runtime` → `Change runtime type` → **T4 GPU**)
+ส่วนโน้ตบุ๊กสำหรับภาพนิ่งจะรันบน CPU ก็ได้
+
+ไฟล์ตัวอย่าง `fire_image.png` และ `fire.mp4` อยู่ในคลังโค้ดนี้
+และโน้ตบุ๊กฝั่ง inference จะดาวน์โหลดให้เองอัตโนมัติ
+
+## เวอร์ชันของไลบรารี
+
+| ไลบรารี | เวอร์ชัน |
+|---|---|
+| `ultralytics` | `>=8.4.122` |
+| `supervision` | `>=0.30.0` |
+| `roboflow` | `>=1.4.1` |
+| โมเดล | `yolo26m.pt` (เปลี่ยนเป็นขนาด `n`/`s`/`l`/`x` ได้ในโน้ตบุ๊กสำหรับเทรน) |
+
+ผู้เขียนกำหนดเป็นเวอร์ชันขั้นต่ำ ไม่ได้ตรึงเวอร์ชันแบบเป๊ะ ๆ
+เพื่อให้ pip ยังจับคู่กับ PyTorch รุ่นที่ Colab ติดตั้งมาให้ในแต่ละช่วงได้
+
+## การเปลี่ยนแปลงที่ผู้เขียนดำเนินการ
+
+### 1. โน้ตบุ๊กเปิดไม่ขึ้น
+
+สาเหตุมีสองเรื่อง และเป็นคนละเรื่องกัน
+
+- `Supervision_Video_Inferencing.ipynb` มีบล็อก `metadata.widgets` ที่รายการ
+  `application/vnd.jupyter.widget-state+json` ขาดคีย์ `state` ไป
+  ซึ่งเป็นเงื่อนไขที่ทำให้ GitHub ขึ้นข้อความ *"Invalid Notebook"* พอดี
+- โน้ตบุ๊กสำหรับเทรนโมเดลมีขนาด 1.68 MB เกินเพดานการแสดงผลของ GitHub ที่ราว 1 MB
+  โดย 1.67 MB ในนั้นคือภาพผลลัพธ์ที่ฝังมาในรูปแบบ base64
+
+เดิมทั้งสามไฟล์เป็น `nbformat 4.0` ที่ไม่มี cell ID ตอนนี้ผู้เขียนปรับเป็น 4.5 ใส่ cell ID ครบ
+ล้าง output ที่ฝังอยู่ออกทั้งหมด และจัดระเบียบ metadata ใหม่
+ขนาดไฟล์จึงเหลือราว 8 KB, 5 KB และ 10 KB ตามลำดับ
+
+### 2. โค้ดไม่ได้แค่ล้าสมัย แต่รันไม่ได้เลย
+
+- เปลี่ยนจาก `yolov8m.pt` มาใช้ **YOLO26** ซึ่งเป็นสถาปัตยกรรมแบบครบวงจร (end-to-end)
+  และไม่ต้องผ่านขั้นตอน NMS
+- โค้ดเดิมตรึงเวอร์ชันไว้ที่ `ultralytics==8.0.20` (มกราคม 2023) ซึ่ง build บน Colab ปัจจุบันไม่ผ่านแล้ว
+  ส่วน `supervision==0.1.0` ก็เรียก module path (`supervision.tools.detections`,
+  `supervision.draw.color`) ที่ไม่มีอยู่แล้ว
+- อาร์กิวเมนต์ `BoxAnnotator(..., labels=...)` ถูกถอดออกตั้งแต่ supervision 0.22
+  ตอนนี้การวาดผลลัพธ์แยกเป็น `BoxAnnotator` กับ `LabelAnnotator`
+- **การติดตามวัตถุคือส่วนที่พังหนักที่สุด** โน้ตบุ๊กเดิมโคลนคลังโค้ด
+  [ByteTrack](https://github.com/ifzhang/ByteTrack) มา build YOLOX จากซอร์ส
+  ติดตั้ง `onemetric` กับ `cython_bbox` แล้วยังต้องใช้ `sed` แก้อีกสองบรรทัด
+  เพื่อเลี่ยงบั๊กที่ต้นทางปิดไปนานแล้ว ชุดเครื่องมือแบบนี้ build ไม่ผ่านอีกต่อไป
+  ทุกวันนี้ ByteTrack มากับ Ultralytics อยู่แล้ว คำสั่ง
+  `model.track(persist=True, tracker="bytetrack.yaml")` บรรทัดเดียวจึงแทนที่ทั้งหมดนั้นได้
+  ที่น่าสนใจคือ ลูปเรนเดอร์ของโค้ดเดิมสร้างออบเจกต์ `BYTETracker` ขึ้นมาแล้วไม่เคยเรียกใช้เลย
+  สิ่งที่เรียกว่า "การติดตามวัตถุ" ในผลลัพธ์เดิมจึงเป็นแค่ผลตรวจจับรายเฟรมที่ไม่มีการติดตามใด ๆ
+- ByteTrack ถูกป้อนผลตรวจจับที่ค่าความเชื่อมั่นต่ำโดยตั้งใจ
+  เพราะการดึงกรอบที่มั่นใจน้อยกลับมาจับคู่กับ track ที่ยังเคลื่อนที่อยู่
+  คือที่มาของความแม่นยำส่วนใหญ่ของมัน ผู้เขียนจึงกรองค่าความเชื่อมั่น *หลัง* ขั้นตอน tracking
+  แทนที่จะไปตัดข้อมูลตั้งแต่ขาเข้า
+- เอาพาธ `runs/detect/train` ที่ hardcode ไว้ออก เปลี่ยนไปอ่านจาก `results.save_dir` แทน
+  เพราะ Ultralytics จะไล่เลขเป็น `train2` และ `train3` ทุกครั้งที่รันซ้ำ
+- API key ของ Roboflow อ่านจาก Colab Secrets หรือตัวแปรสภาพแวดล้อม
+  แทนการเขียน `api_key="YOUR_API_KEY"` ไว้ในเซลล์ตรง ๆ
+- เพิ่มขั้นตอน re-encode วิดีโอเป็น H.264 ด้วย ffmpeg เพราะ Supervision เขียนไฟล์ออกมาเป็น `mp4v`
+  ซึ่งเบราว์เซอร์ถอดรหัสไม่ได้ วิดีโอผลลัพธ์เลยเล่นในหน้าโน้ตบุ๊กไม่ขึ้น
+
+เนื่องจากล้าง output ออกหมด โน้ตบุ๊กจึงไม่แสดงกราฟการเทรนบนหน้า GitHub อีกต่อไป
+ซึ่งเป็นข้อแลกเปลี่ยนที่เลี่ยงไม่ได้สำหรับไฟล์ที่ใหญ่เกินเพดาน
+และผลลัพธ์ชุดเดิมก็ล้าสมัยไปแล้วเมื่อเทียบกับโค้ดที่เขียนใหม่อยู่ดี
+
+## ชุดข้อมูล
+
+Alireza Shamsoshoara, Fatemeh Afghah, Abolfazl Razi, Liming Zheng, Peter Fulé, Erik Blasch,
+November 19, 2020, "The FLAME dataset: Aerial Imagery Pile burn detection using drones (UAVs)",
+IEEE Dataport, doi: <https://dx.doi.org/10.21227/qad6-r683>.
+
+ขั้นตอนเทรนโมเดลจะดึงชุดข้อมูลฉบับที่ติดป้ายกำกับแล้วมาจาก Roboflow
+ซึ่งต้องใช้ [API key](https://app.roboflow.com/settings/api) แบบไม่มีค่าใช้จ่าย
+เก็บ key ไว้ในแผง 🔑 **Secrets** ของ Colab ภายใต้ชื่อ `ROBOFLOW_API_KEY`
+แล้วเปิดสิทธิ์ *Notebook access* ด้วย
+
+## เครดิต
+
+คลังโค้ดนี้ fork มาจาก [tim3in/Fire-Detection-Drone](https://github.com/tim3in/Fire-Detection-Drone)
+
+`main.ipynb` เป็นฉบับปรับปรุงของบทความเรื่อง
+[Aerial Fire Detection with Drone Imagery and Computer Vision](https://blog.roboflow.com/aerial-fire-detection/)
+โดย Timothy M. เผยแพร่บนบล็อกของ Roboflow เมื่อวันที่ 19 กันยายน 2023
+เอกสารฉบับนี้ครอบคลุมเนื้อหาเดียวกัน แต่ผู้เขียนเรียบเรียงขึ้นใหม่ให้เป็นเอกสารของคลังโค้ดนี้เอง
+ไม่ได้คัดลอกต้นฉบับมา พร้อมปรับโค้ดให้ทันสมัย และชี้จุดที่ล้าสมัยไว้ตรงตำแหน่งที่เนื้อหานั้นปรากฏ
+
+> Timothy M. (Sep 19, 2023). Aerial Fire Detection with Drone Imagery and Computer
+> Vision. Roboflow Blog: https://blog.roboflow.com/aerial-fire-detection/
