@@ -6,17 +6,27 @@ annotated with [Supervision](https://supervision.roboflow.com/).
 > **Updated August 2026.** I've modernised this project end to end. The original
 > notebooks were written against early-2023 libraries and no longer ran — and two of
 > them wouldn't even render on GitHub or open in Colab. Everything below now runs on
-> current releases. See [What I changed](#what-i-changed).
+> current releases, and I've added [`main.ipynb`](main.ipynb) — an updated version of the
+> [Roboflow blog post](https://blog.roboflow.com/aerial-fire-detection/) this project
+> accompanies. See [What I changed](#what-i-changed).
 
 ## Notebooks
 
-**Start with [`main.ipynb`](main.ipynb)** — the guided walkthrough of the whole project.
-It explains how the system fits together, how the dataset was built, and hands you off
-to each of the three runnable notebooks at the right point.
+**Start with [`main.ipynb`](main.ipynb) — an updated version of the Roboflow blog post
+[Aerial Fire Detection with Drone Imagery and Computer Vision](https://blog.roboflow.com/aerial-fire-detection/).**
+
+It covers the same ground as the original article — why aerial fire detection, how the
+system works end to end, dataset preparation, labelling, training, and inference on
+images and video — but with the code updated to libraries that still run, and with each
+section handing you off to the relevant runnable notebook at the right point.
+
+The article dates from September 2023. Some of its code still runs fine, some is merely
+dated — and the annotation and tracking sections no longer run at all. `main.ipynb` flags
+each of those points as it reaches them, rather than leaving you to find out by running it.
 
 | Notebook | Purpose | |
 |---|---|---|
-| `main.ipynb` | **Start here** — full project walkthrough | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jakkzz/Fire-Detection-Drone/blob/main/main.ipynb) |
+| `main.ipynb` | **Start here** — updated version of the [Roboflow blog post](https://blog.roboflow.com/aerial-fire-detection/) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jakkzz/Fire-Detection-Drone/blob/main/main.ipynb) |
 | `drone_fire_detection_yolo26.ipynb` | Train the model on the Roboflow dataset | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jakkzz/Fire-Detection-Drone/blob/main/drone_fire_detection_yolo26.ipynb) |
 | `Supervision_Image_Inferencing.ipynb` | Run the trained model on a single image | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jakkzz/Fire-Detection-Drone/blob/main/Supervision_Image_Inferencing.ipynb) |
 | `Supervision_Video_Inferencing.ipynb` | Detection + ByteTrack tracking on video | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jakkzz/Fire-Detection-Drone/blob/main/Supervision_Video_Inferencing.ipynb) |
@@ -96,7 +106,11 @@ Training pulls the labelled version from Roboflow, which needs a free
 
 Forked from [tim3in/Fire-Detection-Drone](https://github.com/tim3in/Fire-Detection-Drone).
 
-`main.ipynb` follows the project described in
+`main.ipynb` is an updated version of
 [Aerial Fire Detection with Drone Imagery and Computer Vision](https://blog.roboflow.com/aerial-fire-detection/)
-by Timothy M. on the Roboflow Blog, written up as this repo's own walkthrough with the
-code brought up to date.
+by Timothy M. on the Roboflow Blog (Sep 19, 2023). It covers the same material, rewritten
+as this repo's own walkthrough rather than reproduced, with the code brought up to date
+and the outdated snippets called out where they appear.
+
+> Timothy M. (Sep 19, 2023). Aerial Fire Detection with Drone Imagery and Computer
+> Vision. Roboflow Blog: https://blog.roboflow.com/aerial-fire-detection/
