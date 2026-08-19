@@ -47,10 +47,15 @@ automatically by the inference notebooks.
 | `ultralytics` | `>=8.4.122` |
 | `supervision` | `>=0.30.0` |
 | `roboflow` | `>=1.4.1` |
+| `lap` | `>=0.5.12` |
 | Model | `yolo26m.pt` (swap to `n`/`s`/`l`/`x` in the training notebook) |
 
 Version floors rather than exact pins, so pip can still resolve against whatever
 PyTorch build Colab ships that week.
+
+`lap` is required by the ByteTrack tracker but is not an Ultralytics dependency. Without it
+in the install cell, `model.track(...)` pip-installs it in the middle of the video loop and
+prints a "restart runtime" warning.
 
 ## What I changed
 
