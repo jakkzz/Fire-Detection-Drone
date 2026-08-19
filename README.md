@@ -10,14 +10,19 @@ annotated with [Supervision](https://supervision.roboflow.com/).
 
 ## Notebooks
 
+**Start with [`main.ipynb`](main.ipynb)** — the guided walkthrough of the whole project.
+It explains how the system fits together, how the dataset was built, and hands you off
+to each of the three runnable notebooks at the right point.
+
 | Notebook | Purpose | |
 |---|---|---|
+| `main.ipynb` | **Start here** — full project walkthrough | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jakkzz/Fire-Detection-Drone/blob/main/main.ipynb) |
 | `drone_fire_detection_yolo26.ipynb` | Train the model on the Roboflow dataset | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jakkzz/Fire-Detection-Drone/blob/main/drone_fire_detection_yolo26.ipynb) |
 | `Supervision_Image_Inferencing.ipynb` | Run the trained model on a single image | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jakkzz/Fire-Detection-Drone/blob/main/Supervision_Image_Inferencing.ipynb) |
 | `Supervision_Video_Inferencing.ipynb` | Detection + ByteTrack tracking on video | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jakkzz/Fire-Detection-Drone/blob/main/Supervision_Video_Inferencing.ipynb) |
 
-Run them in that order. Training exports a `best.pt` checkpoint that both inference
-notebooks expect you to upload — it isn't committed here. Use a GPU runtime
+Run the three numbered notebooks in that order. Training exports a `best.pt` checkpoint
+that both inference notebooks expect you to upload — it isn't committed here. Use a GPU runtime
 (`Runtime` → `Change runtime type` → **T4 GPU**); the image notebook also works on CPU.
 
 Sample inputs `fire_image.png` and `fire.mp4` live in this repo and are fetched
@@ -90,3 +95,8 @@ Training pulls the labelled version from Roboflow, which needs a free
 ## Credit
 
 Forked from [tim3in/Fire-Detection-Drone](https://github.com/tim3in/Fire-Detection-Drone).
+
+`main.ipynb` follows the project described in
+[Aerial Fire Detection with Drone Imagery and Computer Vision](https://blog.roboflow.com/aerial-fire-detection/)
+by Timothy M. on the Roboflow Blog, written up as this repo's own walkthrough with the
+code brought up to date.
