@@ -51,19 +51,25 @@
 | โน้ตบุ๊ก | หน้าที่ | |
 |---|---|---|
 | [`th/main.ipynb`](main.ipynb) | **เริ่มต้นที่นี่** ฉบับภาษาไทยของ[บทความบนบล็อกของ Roboflow](https://blog.roboflow.com/aerial-fire-detection/) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jakkzz/Fire-Detection-Drone/blob/main/th/main.ipynb) |
-| [`drone_fire_detection_yolo26.ipynb`](drone_fire_detection_yolo26.ipynb) | เทรนโมเดลด้วยชุดข้อมูลจาก Roboflow | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jakkzz/Fire-Detection-Drone/blob/main/th/drone_fire_detection_yolo26.ipynb) |
-| [`Supervision_Image_Inferencing.ipynb`](Supervision_Image_Inferencing.ipynb) | รันโมเดลที่เทรนแล้วกับภาพนิ่งหนึ่งภาพ | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jakkzz/Fire-Detection-Drone/blob/main/th/Supervision_Image_Inferencing.ipynb) |
-| [`Supervision_Video_Inferencing.ipynb`](Supervision_Video_Inferencing.ipynb) | ตรวจจับและติดตามวัตถุด้วย ByteTrack บนวิดีโอ | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jakkzz/Fire-Detection-Drone/blob/main/th/Supervision_Video_Inferencing.ipynb) |
+| [`drone_fire_detection_yolo26.ipynb`](drone_fire_detection_yolo26.ipynb) | เทรนโมเดล + ตรวจจับบนภาพนิ่ง + ตรวจจับและติดตามบนวิดีโอ ครบในไฟล์เดียว | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jakkzz/Fire-Detection-Drone/blob/main/th/drone_fire_detection_yolo26.ipynb) |
 
-รันโน้ตบุ๊กทั้งสามไฟล์ตามลำดับในตาราง ขั้นตอนเทรนโมเดลจะได้ไฟล์ checkpoint ชื่อ `best.pt` ออกมา
-ซึ่งโน้ตบุ๊กฝั่ง inference ทั้งสองไฟล์จะให้อัปโหลดไฟล์นี้เข้าไป
+`drone_fire_detection_yolo26.ipynb` แบ่งเป็นสามส่วน ให้รันจากบนลงล่างตามลำดับ
+
+| ส่วน | เนื้อหา | GPU |
+|---|---|---|
+| ส่วนที่ 1 | เทรนโมเดล YOLO26 กับชุดข้อมูลจาก Roboflow | จำเป็น |
+| ส่วนที่ 2 | ตรวจจับไฟบนภาพนิ่ง แล้ววาดผลลัพธ์ด้วย Supervision | ไม่จำเป็น |
+| ส่วนที่ 3 | ตรวจจับและติดตามไฟบนวิดีโอด้วย ByteTrack | จำเป็น |
+
+ส่วนที่ 1 จะได้ไฟล์ checkpoint ชื่อ `best.pt` ออกมา ซึ่งส่วนที่ 2 และ 3 จะหยิบไปใช้ต่อให้เองอัตโนมัติ
+เมื่อรันต่อกันในเซสชันเดียว ถ้าเปิดโน้ตบุ๊กขึ้นมาใหม่แล้วข้ามไปที่ส่วน inference เลย
+โน้ตบุ๊กจะมองหา `best.pt` ในโฟลเดอร์ปัจจุบันก่อน แล้วค่อยขอให้อัปโหลดเป็นทางเลือกสุดท้าย
 ทั้งนี้ `best.pt` ไม่ได้เก็บไว้ในคลังโค้ดนี้
 
 ควรรันบน runtime แบบ GPU (`Runtime` → `Change runtime type` → **T4 GPU**)
-ส่วนโน้ตบุ๊กสำหรับภาพนิ่งจะรันบน CPU ก็ได้
 
 ไฟล์ตัวอย่าง `fire_image.png` และ `fire.mp4` อยู่ในคลังโค้ดนี้
-และโน้ตบุ๊กฝั่ง inference จะดาวน์โหลดให้เองอัตโนมัติ
+และโน้ตบุ๊กจะดาวน์โหลดให้เองอัตโนมัติ
 
 ## เวอร์ชันของไลบรารี
 
